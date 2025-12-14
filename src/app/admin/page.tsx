@@ -3,24 +3,23 @@
 import { supabase } from '@/lib/supabase'
 import { useState, useEffect } from 'react'
 
-async function fetchPending() {
-  const { data } = await supabase!
-    .from('vendors')
-    .select('id,name,city,whatsapp,instagram,is_approved')
-    .eq('is_approved', false)
-    .order('created_at', { ascending: true })
-  return data ?? []
-}
-
 export default function AdminPage() {
   const [pending, setPending] = useState<any[]>([])
   const [loading, setLoading] = useState(true)
 
   useEffect(() => {
+    async function fetchPending() {
+      const { data } = await supabase!
+        .from('vendors')
+        .select('id,name,city,whatsapp,instagram,is_approved')
+        .eq('is_approved', false)
+        .order('created_at', { ascending: true })
+
+      setPending(data ?? [])
+      setLoading(false)
+    }
+
     fetchPending()
-      .then(setPending)
-      .catch(console.error)
-      .finally(() => setLoading(false))
   }, [])
 
   return (
