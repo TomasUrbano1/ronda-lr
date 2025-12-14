@@ -1,0 +1,1 @@
+export function waLink(p:string,m:string){const x=(p||'').replace(/[^\d]/g,'');return `https://wa.me/${x}?text=${encodeURIComponent(m)}`;}
