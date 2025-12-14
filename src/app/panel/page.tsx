@@ -11,7 +11,7 @@ export default function PanelPage() {
 
   useEffect(() => {
     const getUser = async () => {
-      const { data: { user } } = await supabase.auth.getUser()
+      const { data: { user } } = await supabase!.auth.getUser()
       if (!user) {
         router.push('/login')
       } else {
@@ -26,7 +26,7 @@ export default function PanelPage() {
   const fetchProducts = async (userId: string) => {
     // Asumimos que guardamos el vendor_id en user_metadata o lo buscamos por email
     // Por ahora, cargamos todos los productos (mejoramos después)
-    const { data } = await supabase.from('products').select('*')
+    const { data } = await supabase!.from('products').select('*')
     setProducts(data || [])
   }
 
