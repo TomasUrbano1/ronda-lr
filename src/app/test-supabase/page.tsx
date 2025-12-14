@@ -2,11 +2,11 @@
 import { supabase, supabaseAdmin } from '@/lib/supabaseClient'
 
 export default async function TestSupabase() {
-  let frontendData = null
-  let frontendError = null
+  let frontendData: any = null
+  let frontendError: string | null = null
 
-  let backendData = null
-  let backendError = null
+  let backendData: any = null
+  let backendError: string | null = null
 
   // Test frontend
   try {
