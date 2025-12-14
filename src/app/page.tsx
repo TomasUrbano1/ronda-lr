@@ -19,7 +19,7 @@ export default function HomePage() {
       setLoading(true)
 
       // Cargar productos
-      const { data: productsData, error: productsError } = await supabase
+      const { data: productsData, error: productsError } = await supabase!
         .from('products')
         .select('id, title, description, price, image_url, category, vendor_id')
 
@@ -31,7 +31,7 @@ export default function HomePage() {
       }
 
       // Cargar vendedores aprobados
-      const { data: approvedVendors, error: vendorsError } = await supabase
+      const { data: approvedVendors, error: vendorsError } = await supabase!
         .from('vendors')
         .select('id, name, whatsapp')
         .eq('approved', true)
