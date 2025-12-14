@@ -62,7 +62,7 @@ export default async function StorePage({ params: { id }, searchParams }: { para
             price={p.price}
             description={p.description}
             image_url={p.image_url}
-            vendor={{ id: vendor.id, name: vendor.name, whatsapp: vendor.whatsapp }}
+            vendor={{ name: vendor.name, whatsapp: vendor.whatsapp }}
           />
         ))}
         {filtered.length === 0 && (
