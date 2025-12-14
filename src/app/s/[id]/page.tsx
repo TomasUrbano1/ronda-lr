@@ -58,10 +58,10 @@ export default async function StorePage({ params: { id }, searchParams }: { para
           <ProductCard
             key={p.id}
             id={p.id}
-            title={p.title}
+            name={p.title}  // <--- name en vez de title
             price={p.price}
             description={p.description}
-            image_url={p.image_url}
+            image={p.image_url}  // <--- image en vez de image_url (común en ProductCard)
             vendor={{ name: vendor.name, whatsapp: vendor.whatsapp }}
           />
         ))}
