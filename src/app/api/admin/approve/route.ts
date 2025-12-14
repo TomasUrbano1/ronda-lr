@@ -1,20 +1,22 @@
 import { supabase } from '@/lib/supabase'
 import { NextResponse } from 'next/server'
+import { randomBytes } from 'crypto'
+
+function code() {
+  return randomBytes(3).toString('hex').toUpperCase()
+}
 
 export async function POST(req: Request) {
-  const formData = await req.formData()
-  const secret = formData.get('secret') as string
-  const vendor_id = formData.get('vendor_id') as string
+  const { vendor_id, product_id, utm } = await req.json()
 
-  const adminSecret = process.env.ADMIN_SECRET
-  if (secret !== adminSecret) return NextResponse.json({ ok: false, error: 'Unauthorized' }, { status: 401 })
+  const hasSupabase = !!supabase
 
-  const { error } = await supabase!
-    .from('vendors')
-    .update({ is_approved: true })
-    .eq('id', vendor_id)
+  const leadCode = code()
 
-  if (error) return NextResponse.json({ ok: false, error: error.message }, { status: 500 })
+  if (hasSupabase) {
+    const { error } = await supabase!.from('leads').insert([{ vendor_id, product_id, code: leadCode, utm }])
+    if (error) throw error
+  }
 
-  return NextResponse.redirect(new URL('/admin', req.url))
+  return NextResponse.json({ ok: true, code: leadCode })
 }
