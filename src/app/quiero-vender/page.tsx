@@ -25,7 +25,7 @@ export default function QuieroVenderPage() {
     e.preventDefault()
     setLoading(true)
 
-    const { data, error } = await supabase
+    const { data, error } = await supabase!
       .from('vendors')
       .insert([
         {
