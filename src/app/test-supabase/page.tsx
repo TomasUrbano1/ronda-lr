@@ -2,11 +2,29 @@
 import { supabase, supabaseAdmin } from '@/lib/supabaseClient'
 
 export default async function TestSupabase() {
+  let frontendData = null
+  let frontendError = null
+
+  let backendData = null
+  let backendError = null
+
   // Test frontend
-  const { data: frontendData, error: frontendError } = await supabase.rpc('version', {}).single().catch(() => ({ data: null, error: { message: 'No RPC disponible' } }))
+  try {
+    const { data, error } = await supabase.rpc('version', {}).single()
+    if (error) throw error
+    frontendData = data
+  } catch (err: any) {
+    frontendError = err.message || 'No RPC disponible'
+  }
 
   // Test backend (admin)
-  const { data: backendData, error: backendError } = await supabaseAdmin.rpc('version', {}).single().catch(() => ({ data: null, error: { message: 'No RPC disponible' } }))
+  try {
+    const { data, error } = await supabaseAdmin.rpc('version', {}).single()
+    if (error) throw error
+    backendData = data
+  } catch (err: any) {
+    backendError = err.message || 'No RPC disponible'
+  }
 
   return (
     <div className="min-h-screen bg-gray-100 flex items-center justify-center p-8">
@@ -19,7 +37,7 @@ export default async function TestSupabase() {
             {frontendError ? (
               <div className="bg-red-50 border border-red-300 text-red-700 p-6 rounded-xl">
                 <p className="font-bold">❌ Error frontend:</p>
-                <pre className="text-sm mt-2 overflow-auto">{frontendError.message}</pre>
+                <pre className="text-sm mt-2 overflow-auto">{frontendError}</pre>
               </div>
             ) : (
               <div className="bg-green-50 border border-green-300 text-green-700 p-6 rounded-xl">
@@ -34,7 +52,7 @@ export default async function TestSupabase() {
             {backendError ? (
               <div className="bg-red-50 border border-red-300 text-red-700 p-6 rounded-xl">
                 <p className="font-bold">❌ Error backend (normal si no pusiste secret key aún):</p>
-                <pre className="text-sm mt-2 overflow-auto">{backendError.message}</pre>
+                <pre className="text-sm mt-2 overflow-auto">{backendError}</pre>
               </div>
             ) : (
               <div className="bg-green-50 border border-green-300 text-green-700 p-6 rounded-xl">
